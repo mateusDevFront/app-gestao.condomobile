@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 
 import {
-    ImageBackground,
     Container,
     Field,
     ButtonArea,
@@ -13,7 +12,6 @@ import { useStateValue } from '../../contexts/StateContext'
 import api from '../../services/api'
 
 import Logo from '../../assets/logo.svg'
-import imagebackground from '../../assets/splash.png'
 
 export default () => {
 
@@ -48,7 +46,6 @@ export default () => {
     }
 
     return (
-        <ImageBackground source={imagebackground}>
         <Container>
             <Logo
             style={{marginBottom: 50}}
@@ -79,6 +76,5 @@ export default () => {
                 <ButtonText>CADASTRAR</ButtonText>
             </ButtonArea>
         </Container>
-        </ImageBackground>
     )
 }

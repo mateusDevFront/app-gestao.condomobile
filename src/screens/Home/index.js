@@ -11,14 +11,16 @@ import {
     ExitText,
     PropertyList,
     ButtonArea,
-    ButtonText
+    ButtonText,
+    BoxAreaNameUser,
+    BoxAreaNameTitle,
+    BoxAreaHeader
 } from './styles'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
 import IconCond from 'react-native-vector-icons/FontAwesome'
-
 import { useStateValue } from '../../contexts/StateContext'
+
 import api from '../../services/api'
 
 export default () => {
@@ -32,7 +34,7 @@ export default () => {
         const check = async () => {
             let property = await AsyncStorage.getItem('property');
 
-            if(property){
+            if (property) {
                 property = JSON.parse(property);
                 //ESCOLHER SALA DE AULA//
                 await chooseProperty(property)
@@ -42,11 +44,11 @@ export default () => {
         check()
     }, [])
 
-    async function handleSignOut(){
+    async function handleSignOut() {
         await api.logout()
         navigation.reset({
             index: 1,
-            routes:[{name: 'SignIn'}]
+            routes: [{ name: 'SignIn' }]
         })
     }
 
@@ -55,40 +57,50 @@ export default () => {
 
         dispatch({
             type: 'setProperty',
-            payload:{
+            payload: {
                 property
             }
         })
         navigation.reset({
             index: 1,
-            routes:[{name: 'MainDrawer'}]
+            routes: [{ name: 'MainDrawer' }]
         })
     }
     return (
         <Container>
+
             <Scroller>
                 {loading &&
-                    <LoadingIcon color="#00FF75" size="large"/>
+                    <LoadingIcon color="#00FF75" size="large" />
                 }
                 {!loading && context.user.user.properties.length > 0 &&
                     <>
-                        <HeaderTitle>Olá {context.user.user.name}</HeaderTitle>
-                        <HeaderTitle>Escolha uma sala de aula</HeaderTitle>
-
+                        <BoxAreaHeader>
+                            <BoxAreaNameUser>
+                                <HeaderTitle style={{ marginTop: 60 }}>Bem vindo, {context.user.user.name}</HeaderTitle>
+                            </BoxAreaNameUser>
+                            <BoxAreaNameTitle>
+                                <HeaderTitle
+                                    style={{
+                                        color: '#ccc',
+                                        fontSize: 20,
+                                        marginBottom: 15
+                                    }}>CONDOMÍNIOS</HeaderTitle>
+                            </BoxAreaNameTitle>
+                        </BoxAreaHeader>
                         <PropertyList>
                             {context.user.user.properties.map((item, index) => (
                                 <ButtonArea key={index} onPress={() => chooseProperty(item)}>
-                                    <IconCond name="building" size={24} color="#ccc" />
+                                    <IconCond name="building" size={24} color="#023642" />
                                     <ButtonText>{item.name}</ButtonText>
                                 </ButtonArea>
-                            ) )}
+                            ))}
                         </PropertyList>
-
                     </>
                 }
-                {!loading &&  context.user.user.properties.length <= 0 &&
+                {!loading && context.user.user.properties.length <= 0 &&
                     <BigArea>
-                        <HeaderTitle>{ context.user.user.name}, parabéns pelo cadastro</HeaderTitle>
+                        <HeaderTitle>{context.user.user.name}, parabéns pelo cadastro</HeaderTitle>
                         <HeaderTitle>Aguarde a liberação do seu cadastro</HeaderTitle>
                     </BigArea>
                 }

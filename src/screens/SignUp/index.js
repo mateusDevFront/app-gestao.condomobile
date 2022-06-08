@@ -2,17 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { Text, TouchableOpacity } from 'react-native'
 import {
-    ImageBackground,
     Container,
     Field,
+    BoxAreaNameUser,
+    BoxAreaNameTitle,
+    BoxAreaHeader,
+    HeaderTitle,
     ButtonArea,
-    ButtonText
+    ButtonText,
+    ContainerField
 } from './styles'
 
 import { useStateValue } from '../../contexts/StateContext'
 import api from '../../services/api'
-
-import imagebackground from '../../assets/splash.png'
 
 export default () => {
 
@@ -26,27 +28,41 @@ export default () => {
     const [passwordConfirm, setPasswordConfirm] = useState('')
 
     const handleRegister = async () => {
-        if(name && email && cpf && password && passwordConfirm){
+        if (name && email && cpf && password && passwordConfirm) {
             let result = await api.register(name, email, cpf, password, passwordConfirm)
-            if(result.error === ''){
-                dispatch({type: 'setToken',payload: {token: result.token}});
-                dispatch({type: 'setUser',payload:{user: result.user},})
-            
+            if (result.error === '') {
+                dispatch({ type: 'setToken', payload: { token: result.token } });
+                dispatch({ type: 'setUser', payload: { user: result.user }, })
+
                 navigation.reset({
-                index: 1,
-                routes: [{ name: 'SignIn' }]
-            })
-            }else{
+                    index: 1,
+                    routes: [{ name: 'SignIn' }]
+                })
+            } else {
                 alert(result.error)
             }
-        }else{
+        } else {
 
             alert('Preencha os campos vázios')
         }
     }
     return (
-        <ImageBackground source={imagebackground}>
-            <Container>
+        <Container>
+            <BoxAreaHeader>
+                <BoxAreaNameUser>
+        
+                </BoxAreaNameUser>
+                <BoxAreaNameTitle>
+                    <HeaderTitle
+                        style={{
+                            color: '#ccc',
+                            fontSize: 20,
+                            marginBottom: 15
+                        }}>CADASTRO</HeaderTitle>
+                </BoxAreaNameTitle>
+            </BoxAreaHeader>
+
+            <ContainerField>
                 <Field
                     placeholder="Digite seu nome completo"
                     placeholderTextColor="#fff"
@@ -85,21 +101,21 @@ export default () => {
                 <ButtonArea onPress={handleRegister}>
                     <ButtonText>CADASTRAR-SE</ButtonText>
                 </ButtonArea>
+            </ContainerField>
 
-                <TouchableOpacity
+            <TouchableOpacity
                 style={{
                     flexDirection: 'row',
                     justifyContent: 'center',
                 }}
                 onPress={() => navigation.navigate('SignIn')}>
-                    <Text style={{color: '#fff', marginRight: 5, fontSize: 15, marginTop: 40}}>
-                        Já possui um login?
-                    </Text>
-                    <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 15, marginTop: 40}}>
-                        CLIQUE AQUI!
-                    </Text>
-                </TouchableOpacity>
-            </Container>
-        </ImageBackground>
+                <Text style={{ color: '#fff', marginRight: 5, fontSize: 15, marginTop: 40 }}>
+                    Já possui um login?
+                </Text>
+                <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 15, marginTop: 40 }}>
+                    CLIQUE AQUI!
+                </Text>
+            </TouchableOpacity>
+        </Container>
     )
 }

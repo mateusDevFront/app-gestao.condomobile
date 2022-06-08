@@ -7,11 +7,6 @@ export const Container = styled.SafeAreaView`
     background-color: rgba(0, 50, 61, 0.9 );
     justify-content: center;
 `
-export const ImageBackground = styled.ImageBackground.attrs({
-    resizeMode: 'stretch'
-})`
-    flex: 1;
-`
 export const Field = styled.TextInput`
 /*     border-width: 1px;
     border-color: #133138; */
